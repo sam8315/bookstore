@@ -6,6 +6,11 @@
     <title>{% block page_title %}{% endblock page_title %}</title>
 </head>
 <body>
+<p>
+    <a href="{% url 'home' %}">home</a>
+    <a href="/admin">admin</a>
+</p>
+
     {% block content %}
     
     {% endblock content %}
