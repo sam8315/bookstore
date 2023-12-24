@@ -2,6 +2,9 @@
 {% block page_title %}book list{% endblock page_title %}
 {% block content %}
     {% for book in books %}
-        <h1>{{ book.title }}</h1>
+    {% comment %} <h1><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></h1> {% endcomment %}
+    <h1><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h1>
+    <p>{{ book.content }}</p>
+        <br/>
     {% endfor %}
 {% endblock content %}
