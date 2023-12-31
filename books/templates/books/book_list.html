@@ -5,7 +5,7 @@
     {% comment %} <h1><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></h1> {% endcomment %}
     <h1><a href="{{ book.get_absolute_url }}">{{ book.title|capfirst }}</a></h1>
     <p>{{ book.author|capfirst }}</p>
-    <p>{{ book.content }}</p>
+    <p>{{ book.content|truncatewords:15 }}</p>
         <br/>
     {% endfor %}
     <a href="{% url 'book_create' %}">add book</a>
