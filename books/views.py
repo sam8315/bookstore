@@ -5,6 +5,7 @@ from .models import Book
 
 class BookListView(generic.ListView):
     model = Book
+    paginate_by = 4
     template_name = 'books/book_list.html'
     context_object_name = 'books'
 
@@ -16,13 +17,13 @@ class BookDetailsView(generic.DetailView):
 
 class BookCreateView(generic.CreateView):
     model = Book
-    fields = ['title', 'author', 'content', 'price']
+    fields = ['title', 'author', 'content', 'price', 'cover']
     template_name = 'books/book_create.html'
 
 
 class BookUpdateView(generic.UpdateView):
     model = Book
-    fields = ['title', 'author', 'content', 'price']
+    fields = ['title', 'author', 'content', 'price', 'cover']
     template_name = 'books/book_update.html'
 
 
