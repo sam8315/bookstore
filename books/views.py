@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from .models import Book
 from django.shortcuts import get_object_or_404, render
 from .forms import CommentForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 
 
 class BookListView(generic.ListView):
@@ -15,6 +17,7 @@ class BookListView(generic.ListView):
 # class BookDetailsView(generic.DetailView):
 #     model = Book
 #     template_name = 'books/book_detail.html'
+@login_required
 def book_details_view(request , pk):
     # get book object
     book = get_object_or_404(Book, pk=pk)
@@ -34,19 +37,28 @@ def book_details_view(request , pk):
 
     return render(request, 'books/book_detail.html', {'book': book, 'comments' : book_comments, 'comment_form' : comment_form})
 
-class BookCreateView(generic.CreateView):
+class BookCreateView(LoginRequiredMixin, generic.CreateView):
     model = Book
     fields = ['title', 'author', 'content', 'price', 'cover']
     template_name = 'books/book_create.html'
 
 
-class BookUpdateView(generic.UpdateView):
+class BookUpdateView(LoginRequiredMixin,UserPassesTestMixin, generic.UpdateView):
     model = Book
     fields = ['title', 'author', 'content', 'price', 'cover']
     template_name = 'books/book_update.html'
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.user == self.request.user
+    
 
-class BoolDeleteView(generic.DeleteView):
+class BoolDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Book
     template_name = 'books/book_delete.html'
     success_url = reverse_lazy('book_list')
+
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.user == self.request.user
